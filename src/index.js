@@ -10,7 +10,7 @@ words.appendChild(p);
 const $title = document.querySelector(`.title`);
 const $sub = document.querySelector(`.subtext`);
 
-const loadSpeechAPI = () => {
+const detectComfy = () => {
   recognition.addEventListener("result", e => {
     const transcript = Array.from(e.results)
       .map(result => result[0])
@@ -40,10 +40,62 @@ const comfyComplete = () => {
   $title.textContent = "Goed zo! Zoals je ziet moet je goed articuleren.";
   $sub.textContent = "Zeg ‘Ik snap het’ om verder te gaan.";
   document.removeEventListener("keyup", handleEnter);
+  detectUnderstood();
 };
 
+const detectUnderstood = () => {
+  recognition.addEventListener("result", e => {
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join("");
+
+    p.textContent = transcript;
+    if (transcript.includes("snap het")) {
+      recognition.abort();
+      understoodComplete();
+    }
+  });
+
+  recognition.addEventListener("end", recognition.start);
+  recognition.start();
+};
+
+const understoodComplete = () => {
+  $title.textContent =
+    "De voorstelling die je zonet gezien hebt, komt uit de opera ‘dingsken123’ en is geschreven, na een bijna-dood-ervaring van de schrijver. Heb jij al eens een bijna dood ervaring gehad?";
+  $sub.textContent = "‘Ja, en ik wil deze vertellen’ of ‘Nee, nog nooit’";
+  detectStory();
+};
+
+const detectStory = () => {
+  recognition.addEventListener("result", e => {
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join("");
+
+    p.textContent = transcript;
+    if (transcript.includes("ik wil deze vertellen")) {
+      recognition.abort();
+      storyYes();
+    }
+    if (transcript.includes("nog nooit")) {
+      recognition.abort();
+      storyNo();
+    }
+  });
+
+  recognition.addEventListener("end", recognition.start);
+  recognition.start();
+};
+
+const storyYes = () => {};
+
+const storyNo = () => {};
+
 const init = () => {
-  loadSpeechAPI();
+  detectComfy();
   document.addEventListener("keyup", handleEnter);
   console.log("hey");
 };
