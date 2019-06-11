@@ -95,6 +95,7 @@ const storyYes = () => {
   $title.textContent =
     "Denk even rustig na, en begin aub met spreken wanneer je wil. Wanneer je klaar bent zeg je: ‘en dit was mijn verhaal’ of druk je op enter.";
   $sub.textContent = "";
+  recognition.addEventListener("speechstart", recordStory);
   recordStory();
 };
 
