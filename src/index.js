@@ -96,12 +96,14 @@ const storyYes = () => {
     "Denk even rustig na, en begin aub met spreken wanneer je wil. Wanneer je klaar bent zeg je: ‘en dit was mijn verhaal’ of druk je op enter.";
   $sub.textContent = "";
   recognition.addEventListener("speechstart", recordStory);
-  recordStory();
 };
 
 const storyNo = () => {};
 
 const recordStory = () => {
+  $wordsContainer.classList.remove("words--container");
+  $wordsContainer.classList.add("words--container2");
+  recognition.removeEventListener("speechstart", recordStory);
   recognition.addEventListener("result", e => {
     document.addEventListener("keyup", handleEnter);
     const transcript = Array.from(e.results)
