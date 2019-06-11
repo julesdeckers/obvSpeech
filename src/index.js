@@ -12,19 +12,19 @@ const $title = document.querySelector(`.title`);
 const $sub = document.querySelector(`.subtext`);
 
 const detectComfy = () => {
-  recognition.addEventListener("soundstart", e => {
-    $wordsContainer.classList.remove(`hide`);
-  });
   recognition.addEventListener("result", e => {
     const transcript = Array.from(e.results)
       .map(result => result[0])
       .map(result => result.transcript)
       .join("");
 
+    if (transcript !== "") {
+      $wordsContainer.classList.remove("hide");
+    }
     p.textContent = transcript;
     if (transcript.includes("zit gemakkelijk")) {
       recognition.abort();
-      $wordsContainer.classList.add(`hide`);
+      $wordsContainer.classList.add("hide");
       comfyComplete();
     }
   });
