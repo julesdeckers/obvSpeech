@@ -18,9 +18,6 @@ const detectComfy = () => {
       .map(result => result.transcript)
       .join("");
 
-    if (transcript !== "") {
-      $wordsContainer.classList.remove("hide");
-    }
     p.textContent = transcript;
     if (transcript.includes("zit gemakkelijk")) {
       recognition.abort();

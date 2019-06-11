@@ -33,13 +33,14 @@ main {
 .subtext {
   font-size: 2rem;
   margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .words--container {
-  position: absolute;
+  position: relative;
   background-color: #06293E;
   color: #86A2A0;
-  font-size: 2.5vw;
+  font-size: 3vw;
   padding: 15rem;
   width: 100%;
   height: 100%;
@@ -47,7 +48,7 @@ main {
 }
 
 .words {
-  text-align: left; 
+  text-align: center; 
   margin-left: 25%;
   width: 50%;
 }
