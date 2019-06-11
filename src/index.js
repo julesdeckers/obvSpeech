@@ -4,6 +4,7 @@ const recognition = new SpeechRecognition();
 recognition.interimResults = true;
 recognition.lang = "nl";
 let p = document.createElement("p");
+const $wordsContainer = document.querySelector(".words--container");
 const words = document.querySelector(".words");
 words.appendChild(p);
 
@@ -11,6 +12,9 @@ const $title = document.querySelector(`.title`);
 const $sub = document.querySelector(`.subtext`);
 
 const detectComfy = () => {
+  recognition.addEventListener("soundstart", e => {
+    $wordsContainer.classList.remove(`hide`);
+  });
   recognition.addEventListener("result", e => {
     const transcript = Array.from(e.results)
       .map(result => result[0])
@@ -20,6 +24,7 @@ const detectComfy = () => {
     p.textContent = transcript;
     if (transcript.includes("zit gemakkelijk")) {
       recognition.abort();
+      $wordsContainer.classList.add(`hide`);
       comfyComplete();
     }
   });
@@ -107,10 +112,10 @@ const recordStory = () => {
       .join("");
 
     p.textContent = transcript;
-    if (transcript.includes("en dit was mijn verhaal")) {
+    if (transcript.includes("dit was mijn verhaal")) {
       recognition.stop();
       console.log("verhaal opgeslagen");
-      storyRecorded();
+      storyRecorded(transcript);
     }
 
     if (e.results[0].isFinal) {
@@ -121,6 +126,10 @@ const recordStory = () => {
 
   recognition.addEventListener("end", recognition.start);
   recognition.start();
+};
+
+const storyRecorded = transcript => {
+  console.log("transcript");
 };
 
 const init = () => {
