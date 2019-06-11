@@ -31,8 +31,7 @@ const detectComfy = () => {
 const handleEnter = e => {
   console.log("key pressed");
   if (e.keyCode === 13) {
-    console.log("key enter");
-    comfyComplete();
+    console.log("verhaal opgeslagen");
   }
 };
 
@@ -90,14 +89,42 @@ const detectStory = () => {
   recognition.start();
 };
 
-const storyYes = () => {};
+const storyYes = () => {
+  $title.textContent =
+    "Denk even rustig na, en begin aub met spreken wanneer je wil. Wanneer je klaar bent zeg je: ‘en dit was mijn verhaal’ of druk je op enter.";
+  $sub.textContent = "";
+  recordStory();
+};
 
 const storyNo = () => {};
 
+const recordStory = () => {
+  recognition.addEventListener("result", e => {
+    document.addEventListener("keyup", handleEnter);
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join("");
+
+    p.textContent = transcript;
+    if (transcript.includes("en dit was mijn verhaal")) {
+      recognition.stop();
+      console.log("verhaal opgeslagen");
+      storyRecorded();
+    }
+
+    if (e.results[0].isFinal) {
+      p = document.createElement("p");
+      words.appendChild(p);
+    }
+  });
+
+  recognition.addEventListener("end", recognition.start);
+  recognition.start();
+};
+
 const init = () => {
   detectComfy();
-  document.addEventListener("keyup", handleEnter);
-  console.log("hey");
 };
 
 init();
