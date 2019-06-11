@@ -21,7 +21,7 @@ const detectComfy = () => {
     p.textContent = transcript;
     if (transcript.includes("zit gemakkelijk")) {
       recognition.abort();
-      $wordsContainer.classList.add("hide");
+      // $wordsContainer.classList.add("hide");
       comfyComplete();
     }
   });
@@ -64,7 +64,7 @@ const detectUnderstood = () => {
 
 const understoodComplete = () => {
   $title.textContent =
-    "De voorstelling die je zonet gezien hebt, komt uit de opera ‘dingsken123’ en is geschreven, na een bijna-dood-ervaring van de schrijver. Heb jij al eens een bijna dood ervaring gehad?";
+    "De voorstelling die je zonet gezien hebt, komt uit de opera ‘La Bohème’ en is geschreven, na een bijna-dood-ervaring van de schrijver. Heb jij al eens een bijna dood ervaring gehad?";
   $sub.textContent = "‘Ja, en ik wil deze vertellen’ of ‘Nee, nog nooit’";
   detectStory();
 };
