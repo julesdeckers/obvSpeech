@@ -60,17 +60,20 @@ main {
   margin-left: auto;
   margin-right: auto;
   width: 60vw;
-  /* animation: colorChange 0.5s; */
-  color: black;
-  opacity: 1;;
+  animation: colorChange 0.3s;
+  opacity: 1;
 }
 
-/* @keyframes colorChange {
+
+@keyframes colorChange {
   0% {
-    color: #06293E;
+    color: #A7A7A7;
+  }
+  90% {
+    color: #A7A7A7;
   }
   100% {
-    color: #E2705F;
+    color: #000000;
   }
-} */
+}
 

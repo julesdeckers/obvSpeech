@@ -37,7 +37,6 @@ const detectComfy = () => {
       p.textContent = transcript;
     }
     if (transcript.includes("zit gemakkelijk")) {
-      recognition.abort();
       // $wordsContainer.classList.add("hide");
       setTimeout(comfyComplete, funcDelay);
       // comfyComplete();
@@ -70,13 +69,12 @@ const detectUnderstood = () => {
     }
     // p.textContent = transcript;
     if (transcript.includes("snap het")) {
-      recognition.abort();
       setTimeout(understoodComplete, funcDelay);
     }
   });
 
   recognition.addEventListener("end", recognition.start);
-  recognition.start();
+  // recognition.start();
 };
 
 const understoodComplete = () => {
@@ -101,17 +99,15 @@ const detectStory = () => {
       p.textContent = transcript;
     }
     if (transcript.includes("ik wil deze vertellen")) {
-      recognition.abort();
       setTimeout(storyYes, funcDelay);
     }
     if (transcript.includes("nog nooit")) {
-      recognition.abort();
       setTimeout(storyNo, funcDelay);
     }
   });
 
   recognition.addEventListener("end", recognition.start);
-  recognition.start();
+  // recognition.start();
 };
 
 const storyYes = () => {
@@ -125,6 +121,7 @@ const storyYes = () => {
 const storyNo = () => {};
 
 const recordStory = () => {
+  console.log(transcript);
   recognition.removeEventListener("speechstart", recordStory);
   recognition.addEventListener("result", e => {
     const transcript = Array.from(e.results)
@@ -134,7 +131,6 @@ const recordStory = () => {
 
     p.textContent = transcript;
     if (transcript.includes("dit was mijn verhaal")) {
-      recognition.stop();
       console.log("verhaal opgeslagen");
       // storyRecorded(transcript);
       storyRecorded(transcript);
