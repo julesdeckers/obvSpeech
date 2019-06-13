@@ -1,14 +1,29 @@
 # OBV Speech app
 
-De obv speech app, tbc
+De Opera Ballet Vlaanderen Speech app is een stemgestuurd programma waarmee jouw verhaal anoniem wordt afgenomen, nadat je de bijbehorende voorstelling hebt gezien op een lokaal festival.
 
-**MVP**
-moet nog ingevuld worden
+## Getting Started
 
-## Built with
+### Prerequisites
 
-Javascript
+- Browsersync
+- Yarn
+- Mamp
+
+### Setup
+
+Zet het project in `htdocs`. Start Mamp.
+
+```
+$ yarn install
+```
+
+```
+$ yarn start
+```
+
+Open via mamp.
 
 ## Authors
 
-- Jules Deckers
+- _Jules Deckers_ - [Devine](https://www.howest.be/nl/opleidingen/bachelor/devine) student
