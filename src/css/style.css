@@ -18,8 +18,8 @@ body {
   width: 96rem;
   margin-left: auto;
   margin-right: auto;
-  /* overflow-y: hidden; */
-  padding: 0 5rem;
+  overflow-y: hidden;
+  padding: 0 3rem;
 }
 
 .hide {
@@ -35,24 +35,88 @@ main {
   color: #400C12;
   text-align: left;
   font-size: 7rem;
-  margin-top: 34vh; 
+  margin-top: 24vh; 
+  animation: fade .5s ease;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .subtext {
   font-size: 3rem;
-  margin-top: 2em;
+  margin-top: 1em;
   margin-bottom: 2em;
+  transition: 1s ease;
 }
 
-.subtext::after {
+.subtextTop {
+  text-align: center;
+  color: #400C12;
+  font-size: 3rem;
+  font-weight: bold;
+  position: absolute;
+  top: 5rem;
+  animation: fade .5s ease;
+}
 
+.subtext:after {
+  content: "";
+  display: block;
+  background: url("../assets/talk.svg") no-repeat;
+  background-position: 25px 28px;
+  width: 163px;
+  height: 163px;
+  border: 3px solid #FF2501;
+  padding: 4rem;
+  transform: scale(0.8);
+  margin-top: 3rem;
+  animation: wiggle 1s ease infinite;
+}
+
+.subtextTop:after {
+  content: "";
+  display: block;
+  visibility: var(--subvis);
+  background: url("../assets/ear.svg") no-repeat;
+  background-position: 40px 28px;
+  width: 163px;
+  height: 163px;
+  border: 3px solid #4FD5D6;
+  padding: 4rem;
+  transform: scale(0.8);
+  margin-top: 3rem;
+  animation: wiggle 1s ease infinite;
+}
+
+@keyframes wiggle {
+  0% {transform: scale(1);}
+  25% {transform: scale(1.03);}
+  50% {transform: scale(0.97);}
+  75% {transform: scale(1);}
+  100% {transform: scale(1);}
 }
 
 .words--container {
-  background-color: #DEAFA0;
+  position: absolute;
+  top: 50%;
+  left: 15%;
   padding: 2rem;
-  font-size: 2rem;
-  animation: anim 0.2s;
+  font-size: 3rem;
+  font-weight: 500;
+}
+
+.words {
+  text-align: center; 
+  width: 60vw;
+  overflow-y: scroll;
+  height: 30vh;
+  /* animation: anim 0.1s ease; */
 }
 
 @keyframes anim {
@@ -64,35 +128,6 @@ main {
   }
 }
 
-.words {
-  overflow: auto;
-  outline: none;
-  box-shadow: none;
-
-  text-align: left; 
-  margin-left: auto;
-  margin-right: auto;
-  width: 60vw;
-  animation: colorChange 0.3s;
-  opacity: 1;
-  background-color: transparent;
-  border: none;
-  resize: none;
-}
-
-
-@keyframes colorChange {
-  0% {
-    color: #A7A7A7;
-  }
-  90% {
-    color: #A7A7A7;
-  }
-  100% {
-    color: #000000;
-  }
-}
-
 /* Decorations */
 
 .takefive {
@@ -101,22 +136,26 @@ main {
   left: 3rem;
 }
 
-.blueDec {
+.redDec {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -8rem;
+  transform: rotate(180deg);
 }
 
-.blueDec2 {
+.redDec2 {
   position: absolute;
   bottom: 0;
-  left: 0;
-  transform: rotate(180deg);
+  left: -8rem;;
 }
 
 .obvLogo {
   position: absolute;
   bottom: 4rem;;
   right: 4rem;
+}
+
+.zdex {
+  z-index: -4;
 }
 

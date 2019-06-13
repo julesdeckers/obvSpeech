@@ -12,21 +12,35 @@ let p = document.createElement("p");
 const $wordsContainer = document.querySelector(".words--container");
 const words = document.querySelector(".words");
 console.log(words);
-// words.appendChild(p);
+words.appendChild(p);
 
-const $title = document.querySelector(`.title`);
-const $sub = document.querySelector(`.subtext`);
+const $title = document.querySelector(".title");
+const $sub = document.querySelector(".subtext");
+const $subtop = document.querySelector(".subtextTop");
+$subtop.style.setProperty("--subvis", "hidden");
+const $info = document.querySelector(".infoText");
 
 const funcDelay = 500;
+const reset = 100;
 
 const resetContainer = () => {
-  p.textContent = "";
+  $subtop.style.setProperty("--subvis", "hidden");
+  $info.classList.remove("hide");
   $wordsContainer.classList.add("hide");
+  $subtop.textContent = "";
+  p.textContent = "";
   recognition.stop();
+};
+
+const updateScroll = () => {
+  words.scrollTop = words.scrollHeight - words.clientHeight;
 };
 
 const detectComfy = () => {
   recognition.addEventListener("result", e => {
+    $info.classList.add("hide");
+    $subtop.textContent = $sub.textContent;
+    $subtop.style.setProperty("--subvis", "visible");
     const transcript = Array.from(e.results)
       .map(result => result[0])
       .map(result => result.transcript)
@@ -39,9 +53,7 @@ const detectComfy = () => {
       p.textContent = transcript;
     }
     if (transcript.includes("opera")) {
-      // $wordsContainer.classList.add("hide");
       setTimeout(comfyComplete, funcDelay);
-      // comfyComplete();
     }
   });
 
@@ -69,42 +81,8 @@ const detectUnderstood = () => {
       $wordsContainer.classList.remove("hide");
       p.textContent = transcript;
     }
-    // p.textContent = transcript;
     if (transcript.includes("snap het")) {
-      setTimeout(understoodComplete, funcDelay);
-    }
-  });
-
-  recognition.addEventListener("end", recognition.start);
-  // recognition.start();
-};
-
-const understoodComplete = () => {
-  resetContainer();
-  $title.textContent =
-    "De voorstelling die je zonet gezien hebt, komt uit de opera ‘La Bohème’ en is geschreven, na een bijna-dood-ervaring van de schrijver. Heb jij al eens een bijna dood ervaring gehad?";
-  $sub.textContent = "‘Ja, ik wil dit vertellen’ of ‘Nee, nog nooit’";
-  setTimeout(detectStory, funcDelay);
-};
-
-const detectStory = () => {
-  recognition.addEventListener("result", e => {
-    const transcript = Array.from(e.results)
-      .map(result => result[0])
-      .map(result => result.transcript)
-      .join("");
-
-    if (p.textContent !== "") {
-      p.textContent = transcript;
-    } else {
-      $wordsContainer.classList.remove("hide");
-      p.textContent = transcript;
-    }
-    if (transcript.includes("wil dit vertellen")) {
       setTimeout(storyYes, funcDelay);
-    }
-    if (transcript.includes("nog nooit")) {
-      setTimeout(storyNo, funcDelay);
     }
   });
 
@@ -115,22 +93,18 @@ const detectStory = () => {
 const storyYes = () => {
   resetContainer();
   $title.textContent = "Wat was je beste herinnering met je vrienden?";
-  $sub.textContent = "";
-  recognition.addEventListener("speechstart", recordStory);
-};
-
-const storyNo = () => {
-  console.log("fork off");
+  $sub.textContent =
+    "Begin met praten als je je verhaal wilt delen. Wanneer je klaar bent met je verhaal druk je op enter.";
+  recognition.addEventListener("speechstart", recordStory, { once: true });
 };
 
 const recordStory = () => {
-  recognition.removeEventListener("speechstart", recordStory);
   recognition.addEventListener("result", e => {
+    $subtop.textContent = $title.textContent;
     const transcript = Array.from(e.results)
       .map(result => result[0])
       .map(result => result.transcript)
       .join("");
-    // p.textContent.concat(transcript);
     if (p.textContent !== "") {
       p.textContent = transcript;
     } else {
@@ -139,7 +113,6 @@ const recordStory = () => {
     }
     if (transcript.includes("einde verhaal")) {
       console.log("verhaal opgeslagen");
-      // storyRecorded(transcript);
       recognition.onspeechend = () => {
         recognition.addEventListener("end", recognition.stop);
         console.log("Speech recognition has stopped.");
@@ -150,47 +123,19 @@ const recordStory = () => {
     if (e.results[0].isFinal) {
       p = document.createElement("p");
       words.appendChild(p);
+      setInterval(updateScroll, 1000);
     }
   });
+
+  recognition.addEventListener("end", recognition.start);
 };
-
-//   const recordStory = () => {
-//     recognition.removeEventListener("speechstart", recordStory);
-//     recognition.addEventListener("result", e => {
-//       const transcript = Array.from(e.results)
-//         .map(result => result[0])
-//         .map(result => result.transcript)
-//         .join("");
-//       // p.textContent.concat(transcript);
-//       if (p.textContent !== "") {
-//         p.textContent = transcript;
-//       } else {
-//         $wordsContainer.classList.remove("hide");
-//         p.textContent = transcript;
-//       }
-//       if (transcript.includes("einde verhaal")) {
-//         console.log("verhaal opgeslagen");
-//         // storyRecorded(transcript);
-//         recognition.onspeechend = () => {
-//           recognition.addEventListener("end", recognition.stop);
-//           console.log("Speech recognition has stopped.");
-//         };
-//         storyRecorded();
-//       }
-
-//       if (e.results[0].isFinal) {
-//         p = document.createElement("p");
-//         words.appendChild(p);
-//       }
-//     });
-
-//   recognition.addEventListener("end", recognition.start);
-//   // recognition.start();
-// };
-// };
 
 const storyRecorded = () => {
   resetContainer();
+  $title.textContent = "Bedankt voor het delen van je verhaal!";
+  $sub.textContent =
+    "Blijf even hangen want de opera zanger zal jouw verhaal misschien aan de volgende vijf brengen! Je kan alle anonieme verhalen terugvinden op operaballet.be/askobv";
+
   console.log("verhaal opgeslagen");
   const finalTranscript = words.querySelectorAll(`p`);
   const transcripted = Array.from(finalTranscript)
@@ -211,9 +156,9 @@ const postTranscript = transcript => {
 };
 
 const init = () => {
-  detectComfy();
+  setTimeout(detectComfy, funcDelay);
   // storyYes();
-  recognition.start();
+  // recognition.start();
 };
 
 init();
