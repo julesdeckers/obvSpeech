@@ -23,12 +23,12 @@ const funcDelay = 500;
 const reset = 100;
 
 const resetContainer = () => {
+  recognition.stop();
   $subtop.style.setProperty("--subvis", "hidden");
   $info.classList.remove("hide");
   $wordsContainer.classList.add("hide");
   $subtop.textContent = "";
   p.textContent = "";
-  recognition.stop();
 };
 
 const updateScroll = () => {
@@ -64,7 +64,7 @@ const comfyComplete = () => {
   resetContainer();
   $title.textContent = "Goed zo! Zoals je ziet moet je goed articuleren.";
   $sub.textContent = "Zeg ‘Ik snap het’ om verder te gaan.";
-  setTimeout(detectUnderstood, funcDelay);
+  setTimeout(detectUnderstood, 2000);
 };
 
 const detectUnderstood = () => {
@@ -99,6 +99,7 @@ const storyYes = () => {
 
 const handleEnter = e => {
   if (e.keyCode === 13) {
+    recognition.abort();
     recognition.onspeechend = () => {
       recognition.addEventListener("end", recognition.abort);
       console.log("Speech recognition has stopped.");
@@ -110,7 +111,8 @@ const handleEnter = e => {
 const recordStory = () => {
   storeStory = document.addEventListener("keyup", handleEnter);
   recognition.addEventListener("result", e => {
-    $subtop.textContent = $title.textContent;
+    $subtop.innerHTML =
+      $title.textContent + "</br></br>Wanneer je klaar bent druk je op ENTER";
     const transcript = Array.from(e.results)
       .map(result => result[0])
       .map(result => result.transcript)
@@ -149,18 +151,21 @@ const storyRecorded = () => {
   console.log(transcripted);
 };
 
-const postTranscript = transcript => {
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "send.php", true);
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.onload = () => {
-    console.log("data sent");
+const postTranscript = async transcript => {
+  const data = {
+    message: transcript
   };
-  xhr.send(`story="${transcript}"`);
+  const response = await fetch("./send.php", {
+    method: "POST",
+    headers: new Headers({ "Content-type": "application/json" }),
+    body: JSON.stringify(data)
+  });
+  const returned = await response.text();
+  console.log(returned);
 };
 
 const init = () => {
-  setTimeout(detectComfy, funcDelay);
+  setTimeout(detectComfy, 2000);
   // storyYes();
   // recognition.start();
 };

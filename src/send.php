@@ -1,36 +1,18 @@
 <?php
 
-// $dbHost = "localhost";
-// $dbName = "obv";
-// $dbUser = "rita";
-// $dbPass = "rita";
+$content = trim(file_get_contents("php://input"));
+$data = json_decode($content, true);
 
-// $con = mysqli_connect('localhost', 'rita', 'rita');
-// if (!$con) {
-//     die('Could not connect: ' . mysqli_error($con));
-// }
+// echo 'bericht goed ontvangen';
 
-// if (!mysqli_select_db($con, 'obv')) {
-//     echo 'Database Not Selected';
-// }
+$story = $data['message'];
+$date = date("Y-m-d h:i:s");
 
-// $story = $_POST['story'];
-// $date = $_POST['date'];
+echo $story;
+echo $date;
 
-$pdo;
+require_once __DIR__ . '/php/dao.php';
 
-function __construct()
-{
-    if (empty($sharedPDO)) {
-        $sharedPDO = new PDO("mysql:host=localhost" . ";dbname=obv", "rita", "rita");
-        $sharedPDO->exec("SET CHARACTER SET utf8");
-        $sharedPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sharedPDO->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    }
-    $this->pdo = &$sharedPDO;
-}
-
-$sql = "INSERT INTO `stories` (story, date) VALUES (`test`, `test`)";
-$statement = $this->pdo->prepare($sql);
-$statement->execute();
-mysqli_close($con);
+$dao = new DAO();
+$input = $dao->insert($story, $date);
+echo $input;

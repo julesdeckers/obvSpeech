@@ -117,7 +117,6 @@ main {
   width: 60vw;
   overflow-y: scroll;
   height: 30vh;
-  /* animation: anim 0.1s ease; */
 }
 
 @keyframes anim {
