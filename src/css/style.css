@@ -1,6 +1,7 @@
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+  /* cursor: none; */
 }
 
 *,
@@ -11,10 +12,12 @@ html {
 
 body {
   font-family: Helvetica, Arial, sans-serif;
-  background-color: #86A2A0;
-  color: #06293E;
-  text-align: center;
+  background-color: white;
   overflow-x: hidden;
+
+  width: 96rem;
+  margin-left: auto;
+  margin-right: auto;
   /* overflow-y: hidden; */
   padding: 0 5rem;
 }
@@ -25,18 +28,24 @@ body {
 
 main {
   height: 100%;
-  margin: 10vw auto;
 }
 
 .title {
-  font-size: 4rem;
   font-weight: bold;
+  color: #400C12;
+  text-align: left;
+  font-size: 7rem;
+  margin-top: 34vh; 
 }
 
 .subtext {
-  font-size: 2rem;
+  font-size: 3rem;
   margin-top: 2em;
   margin-bottom: 2em;
+}
+
+.subtext::after {
+
 }
 
 .words--container {
@@ -56,12 +65,19 @@ main {
 }
 
 .words {
+  overflow: auto;
+  outline: none;
+  box-shadow: none;
+
   text-align: left; 
   margin-left: auto;
   margin-right: auto;
   width: 60vw;
   animation: colorChange 0.3s;
   opacity: 1;
+  background-color: transparent;
+  border: none;
+  resize: none;
 }
 
 
@@ -75,5 +91,32 @@ main {
   100% {
     color: #000000;
   }
+}
+
+/* Decorations */
+
+.takefive {
+  position: absolute;
+  top: 0;
+  left: 3rem;
+}
+
+.blueDec {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.blueDec2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: rotate(180deg);
+}
+
+.obvLogo {
+  position: absolute;
+  bottom: 4rem;;
+  right: 4rem;
 }
 

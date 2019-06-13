@@ -11,7 +11,8 @@ recognition.lang = "nl";
 let p = document.createElement("p");
 const $wordsContainer = document.querySelector(".words--container");
 const words = document.querySelector(".words");
-words.appendChild(p);
+console.log(words);
+// words.appendChild(p);
 
 const $title = document.querySelector(`.title`);
 const $sub = document.querySelector(`.subtext`);
@@ -37,7 +38,7 @@ const detectComfy = () => {
       $wordsContainer.classList.remove("hide");
       p.textContent = transcript;
     }
-    if (transcript.includes("zit gemakkelijk")) {
+    if (transcript.includes("opera")) {
       // $wordsContainer.classList.add("hide");
       setTimeout(comfyComplete, funcDelay);
       // comfyComplete();
@@ -113,8 +114,7 @@ const detectStory = () => {
 
 const storyYes = () => {
   resetContainer();
-  $title.textContent =
-    "Denk even rustig na, en begin aub met spreken wanneer je wil. Wanneer je klaar bent zeg je: ‘einde verhaal’.";
+  $title.textContent = "Wat was je beste herinnering met je vrienden?";
   $sub.textContent = "";
   recognition.addEventListener("speechstart", recordStory);
 };
@@ -130,8 +130,6 @@ const recordStory = () => {
       .map(result => result[0])
       .map(result => result.transcript)
       .join("");
-
-    console.log(transcript);
     // p.textContent.concat(transcript);
     if (p.textContent !== "") {
       p.textContent = transcript;
@@ -154,22 +152,67 @@ const recordStory = () => {
       words.appendChild(p);
     }
   });
-
-  recognition.addEventListener("end", recognition.start);
-  // recognition.start();
 };
+
+//   const recordStory = () => {
+//     recognition.removeEventListener("speechstart", recordStory);
+//     recognition.addEventListener("result", e => {
+//       const transcript = Array.from(e.results)
+//         .map(result => result[0])
+//         .map(result => result.transcript)
+//         .join("");
+//       // p.textContent.concat(transcript);
+//       if (p.textContent !== "") {
+//         p.textContent = transcript;
+//       } else {
+//         $wordsContainer.classList.remove("hide");
+//         p.textContent = transcript;
+//       }
+//       if (transcript.includes("einde verhaal")) {
+//         console.log("verhaal opgeslagen");
+//         // storyRecorded(transcript);
+//         recognition.onspeechend = () => {
+//           recognition.addEventListener("end", recognition.stop);
+//           console.log("Speech recognition has stopped.");
+//         };
+//         storyRecorded();
+//       }
+
+//       if (e.results[0].isFinal) {
+//         p = document.createElement("p");
+//         words.appendChild(p);
+//       }
+//     });
+
+//   recognition.addEventListener("end", recognition.start);
+//   // recognition.start();
+// };
+// };
 
 const storyRecorded = () => {
   resetContainer();
   console.log("verhaal opgeslagen");
   const finalTranscript = words.querySelectorAll(`p`);
-  console.log(words);
-  console.log(finalTranscript);
+  const transcripted = Array.from(finalTranscript)
+    .map(result => result.innerText)
+    .join(". ");
+  postTranscript(transcripted);
+  console.log(transcripted);
+};
+
+const postTranscript = transcript => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "send.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.onload = () => {
+    console.log("data sent");
+  };
+  xhr.send(`story="${transcript}"`);
 };
 
 const init = () => {
-  // detectComfy();
-  storyYes();
+  detectComfy();
+  // storyYes();
   recognition.start();
 };
 
