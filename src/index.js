@@ -11,7 +11,6 @@ recognition.lang = "nl";
 let p = document.createElement("p");
 const $wordsContainer = document.querySelector(".words--container");
 const words = document.querySelector(".words");
-console.log(words);
 words.appendChild(p);
 
 const $title = document.querySelector(".title");
@@ -98,7 +97,18 @@ const storyYes = () => {
   recognition.addEventListener("speechstart", recordStory, { once: true });
 };
 
+const handleEnter = e => {
+  if (e.keyCode === 13) {
+    recognition.onspeechend = () => {
+      recognition.addEventListener("end", recognition.abort);
+      console.log("Speech recognition has stopped.");
+    };
+    storyRecorded();
+  }
+};
+
 const recordStory = () => {
+  storeStory = document.addEventListener("keyup", handleEnter);
   recognition.addEventListener("result", e => {
     $subtop.textContent = $title.textContent;
     const transcript = Array.from(e.results)
@@ -110,14 +120,6 @@ const recordStory = () => {
     } else {
       $wordsContainer.classList.remove("hide");
       p.textContent = transcript;
-    }
-    if (transcript.includes("einde verhaal")) {
-      console.log("verhaal opgeslagen");
-      recognition.onspeechend = () => {
-        recognition.addEventListener("end", recognition.stop);
-        console.log("Speech recognition has stopped.");
-      };
-      storyRecorded();
     }
 
     if (e.results[0].isFinal) {
@@ -132,9 +134,11 @@ const recordStory = () => {
 
 const storyRecorded = () => {
   resetContainer();
+  document.removeEventListener("keyup", handleEnter);
+  $sub.style.setProperty("--talkcon", "hidden");
   $title.textContent = "Bedankt voor het delen van je verhaal!";
-  $sub.textContent =
-    "Blijf even hangen want de opera zanger zal jouw verhaal misschien aan de volgende vijf brengen! Je kan alle anonieme verhalen terugvinden op operaballet.be/askobv";
+  $sub.innerHTML =
+    '<span class="red">Blijf even hangen want de opera zanger zal jouw verhaal misschien aan de volgende vijf brengen!</span></br></br> Je kan alle anonieme verhalen terugvinden op <span class="link">operaballet.be/askobv</span>';
 
   console.log("verhaal opgeslagen");
   const finalTranscript = words.querySelectorAll(`p`);

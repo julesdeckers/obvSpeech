@@ -69,6 +69,7 @@ main {
   content: "";
   display: block;
   background: url("../assets/talk.svg") no-repeat;
+  visibility: var(--talkcon);
   background-position: 25px 28px;
   width: 163px;
   height: 163px;
@@ -153,6 +154,16 @@ main {
   position: absolute;
   bottom: 4rem;;
   right: 4rem;
+}
+
+.red {
+  color: red;
+  font-weight: bold;
+}
+
+.link {
+  font-weight: bold;
+  
 }
 
 .zdex {
